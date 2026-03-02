@@ -3,11 +3,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StatCard } from "@/components/StatCard";
 import { AddDebtDialog } from "@/components/AddDebtDialog";
 import { DebtTable } from "@/components/DebtTable";
-import { DollarSign, TrendingDown, Clock, CheckCircle2 } from "lucide-react";
+import { DollarSign, TrendingDown, Clock, CheckCircle2, FileSearch } from "lucide-react";
 import { Debt } from "@/types/debt";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [debts, setDebts] = useState<Debt[]>([
     {
       id: "1",
@@ -80,7 +83,13 @@ const Index = () => {
               <h1 className="text-4xl font-bold text-foreground mb-2">Debt Management</h1>
               <p className="text-muted-foreground">Track and manage organizational debts</p>
             </div>
-            <AddDebtDialog onAddDebt={handleAddDebt} />
+            <div className="flex gap-2">
+              <AddDebtDialog onAddDebt={handleAddDebt} />
+              <Button variant="outline" onClick={() => navigate("/validation")} className="gap-2">
+                <FileSearch className="h-4 w-4" />
+                Validation
+              </Button>
+            </div>
           </div>
         </header>
 
