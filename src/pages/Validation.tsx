@@ -7,7 +7,7 @@ import { InstallmentFields } from "@/components/validation/InstallmentFields";
 import { AdviseFields } from "@/components/validation/AdviseFields";
 import { PdfViewer } from "@/components/validation/PdfViewer";
 import { LoanParent, LoanInstallment, LoanAdvise } from "@/types/loan";
-import { ArrowLeft, Save, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Save, CheckCircle2, PanelRightClose, PanelRightOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -92,6 +92,7 @@ const Validation = () => {
   const [parent, setParent] = useState<LoanParent>(sampleParent);
   const [installments, setInstallments] = useState<LoanInstallment[]>(sampleInstallments);
   const [advise, setAdvise] = useState<LoanAdvise[]>(sampleAdvise);
+  const [pdfOpen, setPdfOpen] = useState(true);
 
   const handleSave = () => {
     toast.success("Validation data saved successfully");
@@ -114,6 +115,10 @@ const Validation = () => {
           <h1 className="text-lg font-semibold text-foreground">Document Validation</h1>
         </div>
         <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => setPdfOpen(!pdfOpen)} className="gap-1.5">
+            {pdfOpen ? <PanelRightClose className="h-3.5 w-3.5" /> : <PanelRightOpen className="h-3.5 w-3.5" />}
+            {pdfOpen ? "Hide PDF" : "Show PDF"}
+          </Button>
           <Button variant="outline" size="sm" onClick={handleSave} className="gap-1.5">
             <Save className="h-3.5 w-3.5" />
             Save
@@ -128,7 +133,7 @@ const Validation = () => {
       {/* Split View */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left: Index Fields */}
-        <div className="w-1/2 border-r border-border">
+        <div className={pdfOpen ? "w-1/2 border-r border-border" : "w-full"}>
           <ScrollArea className="h-full">
             <div className="p-4 space-y-6">
               <Tabs defaultValue="parent" className="space-y-4">
@@ -152,9 +157,11 @@ const Validation = () => {
         </div>
 
         {/* Right: PDF Viewer */}
-        <div className="w-1/2 p-4">
-          <PdfViewer />
-        </div>
+        {pdfOpen && (
+          <div className="w-1/2 p-4">
+            <PdfViewer />
+          </div>
+        )}
       </div>
     </div>
   );
